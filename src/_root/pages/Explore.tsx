@@ -3,7 +3,7 @@ import Loader from "@/components/shared/Loader";
 import SearchResults from "@/components/shared/SearchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
-import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
+import {  useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
 import { useEffect, useState } from "react";
 import { useInView } from 'react-intersection-observer';
 
@@ -18,19 +18,21 @@ const Explore = () => {
   const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedSearch)
 
   useEffect(() => {
-  if(inView && !searchValue) fetchNextPage();
-  }, [inView, searchValue])
+    if (inView && !searchValue) {
+      fetchNextPage();
+    }
+  }, [inView, searchValue]);
 
-  if(!posts) {
+  if (!posts)
     return (
       <div className="flex-center w-full h-full">
         <Loader />
       </div>
-    )
-  }
+    );
  
-  const shouldShowSearchResults = searchValue !== '';
-  const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item.documents.length === 0)
+    const shouldShowSearchResults = searchValue !== "";
+    const shouldShowPosts = !shouldShowSearchResults && 
+      posts.pages.every(( item ) => item.documents.length === 0);
 
   return (
     <div className="explore-container">

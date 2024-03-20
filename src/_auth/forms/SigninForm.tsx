@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
 
-
 import {
   Form,
   FormControl,
@@ -21,7 +20,6 @@ import Loader from "@/components/shared/Loader";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 import { useUserContext } from "@/context/AuthContext"
 
-// import SigninForm from "./SigninForm"
 
 
 
@@ -30,8 +28,8 @@ import { useUserContext } from "@/context/AuthContext"
     const navigate = useNavigate();
     const { checkAuthUser, isLoading: isUserLoading} = useUserContext();
 
-    const { mutateAsync: signInAccount, isPending } = useSignInAccount();
-
+    const { mutateAsync: signInAccount} = useSignInAccount();
+    
     // 1. Define your form.
 
     const form = useForm<z.infer<typeof SigninValidation>>({
@@ -133,6 +131,4 @@ import { useUserContext } from "@/context/AuthContext"
 
 export default SigninForm;
 
-function checkAuthUser() {
-  throw new Error("Function not implemented.")
-}
+
