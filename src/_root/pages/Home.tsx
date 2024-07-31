@@ -14,7 +14,7 @@ const Home = () => {
         <div className="home-posts">
           <h2 className="h3-bold md:h2-bold text-left w-full">Home Feed</h2>
           
-          {isPostLoading && !posts ? (
+          {isPostLoading && isErrorPosts && !posts ? (
             <Loader />
           ) : (
           <ul className="flex flex-col flex-1 gap-9 w-full">
@@ -26,6 +26,7 @@ const Home = () => {
                 ))}
                 
           </ul>
+         
         )}     
           </div>
           
