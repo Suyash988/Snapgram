@@ -1,7 +1,7 @@
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { ID, Query } from "appwrite";
-import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
+import { appwriteConfig, account, databases, storage, avatars } from "./config";
+import { IUpdatePost, INewPost, INewUser, IUpdateUser } from "@/types";
 
 
 
@@ -45,9 +45,9 @@ export async function saveUserToDB( user: {
          appwriteConfig.databaseId,
          appwriteConfig.userCollectionId,
          ID.unique(),
-         user,
-         
-       )
+         user   
+       );
+
        return newUser;
    } catch (error) {
        console.log(error)
@@ -82,10 +82,11 @@ export async function getCurrentUser() {
 
     return currentUser.documents[0];
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    return null;
   }
 }
-
+  // sign-out
 export async function signOutAccount() {
 try {
    const session = await account.deleteSession("current");
@@ -165,6 +166,8 @@ export  function getFilePreview(fileId: string) {
       100,
     )
 
+  if(!fileUrl) throw Error;
+
     return fileUrl;
   } catch (error) {
     console.log(error)
@@ -184,6 +187,7 @@ export async function deleteFile(fileId: string) {
 }
 
 export async function getRecentPosts() {
+  try{
   const posts = await databases.listDocuments(
     appwriteConfig.databaseId,
     appwriteConfig.postCollectionId,
@@ -192,6 +196,9 @@ export async function getRecentPosts() {
   if(!posts) throw Error;
 
   return posts;
+} catch (error) {
+  console.log(error);
+ }
 }
 
 export async function likePost(postId:string, likesArray: string[]) {
@@ -238,6 +245,7 @@ export async function deleteSavedPost(savedRecordId: string) {
       appwriteConfig.savesCollectionId,
       savedRecordId,
     )
+
     if(!statusCode) throw Error;
 
     return { status: 'ok'};
@@ -253,7 +261,7 @@ export async function getPostById(postId:string) {
     appwriteConfig.postCollectionId,
     postId
     )
-
+   if(!post) throw Error;
     return post;
   } catch (error) {
     console.log(error)
@@ -262,7 +270,7 @@ export async function getPostById(postId:string) {
 
 export async  function updatePost(post: IUpdatePost){
 
-  const hasFileToUpdate = post.file.length > 0
+  const hasFileToUpdate = post.file.length > 0;
 
   try {
 
